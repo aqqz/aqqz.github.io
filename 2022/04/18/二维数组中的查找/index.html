@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>二维数组中的查找 | Taozhi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="题目描述
+在一个二维数组array中（每个一维数组的长度相同），每一行从左至右递增，每一列从上至下递增。完成一个函数，输入这样一个二维数组和一个整数，判断数组中是否含有该整数。
+输入：
+[[1, 2, 8, 9],
+[2, 4, 9, 12],
+[4, 7, 10, 13],
+[6, 8, 11, ">
+  
+  
+  
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+  
+  <link rel="stylesheet" href="../../../../css/style.css">
+  
+    <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox-1.3.4.css">
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="nav-outer">
+    <nav id="main-nav" class="outer">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      
+        <a class="main-nav-link" href="../../../../index.html">Home</a>
+      
+        <a class="main-nav-link" href="../../../../archives">Archives</a>
+      
+        <a class="main-nav-link" href="../../../../about">About</a>
+      
+    </nav>
+    <nav id="sub-nav">
+      
+    </nav>
+  </div>
+  <div id="header-title" class="inner">
+    <h1 id="logo-wrap">
+      <a href="../../../../index.html" id="logo">Taozhi</a>
+    </h1>
+    
+      <h2 id="subtitle-wrap">
+        <a href="../../../../index.html" id="subtitle">Taozhi&#39;s Blog</a>
+      </h2>
+    
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-二维数组中的查找" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2022-04-18T03:24:51.000Z" itemprop="datePublished">2022-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      二维数组中的查找
+    </h1>
+  
+
+      </header>
+    
+    
+<div id="article-toc">
+    <h2 class="widget-title">目录</h2>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%EF%BC%9A%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E7%9A%84%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="toc-number">2.</span> <span class="toc-text">解法：二维数组的二分查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">代码</span></a></li></ol>
+</div>
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="题目描述">题目描述</h2>
+<p>在一个二维数组array中（每个一维数组的长度相同），每一行从左至右递增，每一列从上至下递增。完成一个函数，输入这样一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+<p>输入：<br>
+[[1, 2, 8, 9],<br>
+[2, 4, 9, 12],<br>
+[4, 7, 10, 13],<br>
+[6, 8, 11, 15]]</p>
+<p>给定target=7,返回true.</p>
+<p>给定target=3,返回false.</p>
+<p>数据范围：矩阵长宽满足0&lt;n,m&lt;500,矩阵中的值满足0&lt;val&lt;10^9</p>
+<h2 id="解法：二维数组的二分查找">解法：二维数组的二分查找</h2>
+<p>思路：这道题是要在二维有序数组中查找元素，在一维有序数组中查找元素常用二分查找提高效率，因此想尝试拓展到二维。二分查找是通过不断缩小查询范围，每次查找使得搜索空间减半从而提高查找效率的。</p>
+<p>在一维二分查找中，常采用数组首尾元素当做查找边界，但是这道题不可以这样做。比如如果（begin0,begin1）左上元素当做首节点，（end0, end1）右下当做尾节点，中间元素（mid0, mid1）和target比较大小，从而确定begin、end变量如何调整。但是在这道题中，按主对角线方向，对于任意元素，其上方和左方元素都比自身小，而其右方和下方元素都比自身大，所以比较大小后无法得到确定的调整方向。</p>
+<p>但是如果以副对角线方向选择节点，任意一元素，其左方元素比自身小，下方元素比自身大；其上方元素比自身小，右方元素比自身大，因此选定左下或右上元素作为起点，可以通过比较target大小确定行列的收缩（扩张）范围。如果选择右上元素作为起点，如果target&lt;node,列减小，应该向左侧移动；如果target&gt;node,行增加，应该向下方移动。</p>
+<h2 id="代码">代码</h2>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">Find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target, vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; array)</span>
+</span>&#123;
+    <span class="hljs-keyword">bool</span> res = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">int</span> shape0 = array.<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">if</span> (shape0 == <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">int</span> shape1 = array[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">if</span>( shape1 == <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+    <span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> col = shape1<span class="hljs-number">-1</span>;
+
+    <span class="hljs-keyword">while</span>(row&lt;shape0 &amp;&amp; col&gt;<span class="hljs-number">-1</span>)
+    &#123;
+        <span class="hljs-keyword">if</span>(target == array[row][col])
+            res = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">if</span>(target &lt; array[row][col])
+        &#123;
+            row--;
+        &#125;
+        <span class="hljs-keyword">if</span>(target &gt; array[row][col])
+        &#123;
+            col++;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> res;
+&#125;
+</code></pre></div>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/" rel="tag">算法刷题</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          二叉树的遍历
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../02/20/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+    <aside id="sidebar" class="outer">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../06/21/test-md/">test.md</a>
+          </li>
+        
+          <li>
+            <a href="../../22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">二叉树的遍历</a>
+          </li>
+        
+          <li>
+            <a href="">二维数组中的查找</a>
+          </li>
+        
+          <li>
+            <a href="../../../02/20/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AE%97%E6%B3%95/" style="font-size: 10px;">数据结构, 算法</a> <a href="../../../../tags/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/" style="font-size: 10px;">算法刷题</a>
+    </div>
+  </div>
+
+  
+</aside>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 taozhi<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a><br>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="../../../../js/clipboard.min.js"></script>
+<script src="../../../../js/jquery-1.4.3.min.js"></script>
+
+<script src="../../../../fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError : false
+    });
+  });
+</script>
+
+  </div>
+</body>
+</html>
