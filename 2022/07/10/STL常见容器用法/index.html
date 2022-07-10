@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>STL常见容器用法 | Taozhi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="vector
+vector意为向量，可以理解为变长数组
+
+vector定义
+
+#include&amp;lt;vector&amp;gt;
+using namespace std;
+vector&amp;lt;typename&amp;gt; name;
+
+vector中存放的类型可以是基本数据类型char, int, doubl">
+  
+  
+  
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+  
+  <link rel="stylesheet" href="../../../../css/style.css">
+  
+    <link rel="stylesheet" href="../../../../fancybox/jquery.fancybox-1.3.4.css">
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="nav-outer">
+    <nav id="main-nav" class="outer">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      
+        <a class="main-nav-link" href="../../../../index.html">Home</a>
+      
+        <a class="main-nav-link" href="../../../../archives">Archives</a>
+      
+        <a class="main-nav-link" href="../../../../about">About</a>
+      
+    </nav>
+    <nav id="sub-nav">
+      
+    </nav>
+  </div>
+  <div id="header-title" class="inner">
+    <h1 id="logo-wrap">
+      <a href="../../../../index.html" id="logo">Taozhi</a>
+    </h1>
+    
+      <h2 id="subtitle-wrap">
+        <a href="../../../../index.html" id="subtitle">Taozhi&#39;s Blog</a>
+      </h2>
+    
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-STL常见容器用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2022-07-10T11:31:00.000Z" itemprop="datePublished">2022-07-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      STL常见容器用法
+    </h1>
+  
+
+      </header>
+    
+    
+<div id="article-toc">
+    <h2 class="widget-title">目录</h2>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vector"><span class="toc-number">1.</span> <span class="toc-text">vector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set"><span class="toc-number">2.</span> <span class="toc-text">set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#string"><span class="toc-number">3.</span> <span class="toc-text">string</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map"><span class="toc-number">4.</span> <span class="toc-text">map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#queue"><span class="toc-number">5.</span> <span class="toc-text">queue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#priority_queue"><span class="toc-number">6.</span> <span class="toc-text">priority_queue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stack"><span class="toc-number">7.</span> <span class="toc-text">stack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pair"><span class="toc-number">8.</span> <span class="toc-text">pair</span></a></li></ol>
+</div>
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="vector">vector</h2>
+<p>vector意为向量，可以理解为变长数组</p>
+<ol>
+<li>vector定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+vector&lt;<span class="hljs-keyword">typename</span>&gt; name;
+</code></pre></div>
+<p>vector中存放的类型可以是基本数据类型char, int, double, struct，也可以是STL标准容器，例如vector, set, queue。如果typename也是一个STL容器，定义的时候需要在&gt;&gt;之间加空格，因为在C++11之前会被认为是右移运算符。</p>
+<div class="highlight"><pre class="code"><code>vector&lt;<span class="hljs-keyword">int</span>&gt; name;
+vector&lt;<span class="hljs-keyword">double</span>&gt; name;
+vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt; &gt; name; 
+</code></pre></div>
+<ol start="2">
+<li>vector元素的访问</li>
+</ol>
+<p>(1) 通过下标访问</p>
+<p>(2) 通过迭代器访问</p>
+<p>迭代器类似指针, 定义</p>
+<div class="highlight"><pre class="code"><code>vector&lt;<span class="hljs-keyword">typename</span>&gt;:: iterator it;
+</code></pre></div>
+<p>通过迭代器访问vector元素</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+vector&lt;<span class="hljs-keyword">int</span>&gt; vi;
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">5</span>;i++)
+&#123;
+    vi.<span class="hljs-built_in">push_back</span>(i);
+&#125;
+
+vector&lt;<span class="hljs-keyword">int</span>&gt;:: iterator it = vi.<span class="hljs-built_in">begin</span>();
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i&lt;vi.<span class="hljs-built_in">size</span>();i++)
+&#123;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, *(it+i))
+&#125;
+<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+</code></pre></div>
+<p>begin()函数用于取vi元素的首地址，end()函数用于取尾元素的下一个地址</p>
+<p>使用迭代器遍历的第二种方法</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-keyword">for</span>(vector&lt;<span class="hljs-keyword">int</span>&gt;:: iterator it=vi.<span class="hljs-built_in">begin</span>();it!=vi.<span class="hljs-built_in">end</span>();it++)
+&#123;
+    cout&lt;&lt;*it&lt;&lt;endl;
+&#125;
+</code></pre></div>
+<ol start="3">
+<li>vector常用函数</li>
+</ol>
+<p>(1) push_back() 向容器末尾添加一个元素</p>
+<p>(2) pop_back() 删除容器末尾元素</p>
+<p>(3) size() 范围容器内元素个数</p>
+<p>(4) clear() 清空容器内元素</p>
+<p>(5) insert(it, x) 向vector的任意迭代器it处插入一个元素x</p>
+<p>(6) earse()</p>
+<ul>
+<li>
+<p>earse(it) 除迭代器it位置的元素</p>
+</li>
+<li>
+<p>earse(first, last) 删除[first, last)区间内的元素</p>
+</li>
+</ul>
+<h2 id="set">set</h2>
+<p>set意为集合，是一个内部自动去重和有序的容器</p>
+<ol>
+<li>定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;set&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+set&lt;<span class="hljs-keyword">typename</span>&gt; name;
+</code></pre></div>
+<ol start="2">
+<li>set元素的访问</li>
+</ol>
+<p>set只能通过迭代器访问，除了vector和string之外的STL容器都不能用*(it+N)访问</p>
+<div class="highlight"><pre class="code"><code>set&lt;<span class="hljs-keyword">int</span>&gt; st;
+st.<span class="hljs-built_in">insert</span>(<span class="hljs-number">2</span>);
+st.<span class="hljs-built_in">insert</span>(<span class="hljs-number">5</span>);
+st.<span class="hljs-built_in">insert</span>(<span class="hljs-number">2</span>);
+st.<span class="hljs-built_in">insert</span>(<span class="hljs-number">3</span>);
+set&lt;<span class="hljs-keyword">int</span>&gt;:: iterator it;
+
+<span class="hljs-keyword">for</span>(it=st.<span class="hljs-built_in">begin</span>();it!=st.<span class="hljs-built_in">end</span>();it++)
+&#123;
+    cout&lt;&lt;*it&lt;&lt;endl; <span class="hljs-comment">//2 3 5自动去重和排序</span>
+&#125;
+</code></pre></div>
+<ol start="3">
+<li>常用函数</li>
+</ol>
+<p>(1) insert(x) 把x插入容器，自动去重和排序，时间复杂度O(logN)</p>
+<p>(2) find(value) 返回set中值为value的迭代器</p>
+<p>(3) earse</p>
+<ul>
+<li>
+<p>earse(it) 删除迭代器对应的值</p>
+</li>
+<li>
+<p>earse(value) 删除set中的value</p>
+</li>
+<li>
+<p>earse(first, last) 删除[first, last)区间内的元素</p>
+</li>
+</ul>
+<p>(4) size() 返回set内元素的个数</p>
+<p>(5) clear() 清空set元素</p>
+<h2 id="string">string</h2>
+<p>在C语言中，一般使用char str[]存放字符串，但是操作不方便，容易出错，为了编程者方便地对字符串进行操作，C++在STL中封装了string类型</p>
+<ol>
+<li>string定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+string str; <span class="hljs-comment">//定义，默认是&quot;&quot;</span>
+string str = <span class="hljs-string">&quot;abcd&quot;</span> <span class="hljs-comment">//定义并初始化</span>
+</code></pre></div>
+<ol start="2">
+<li>访问string中的内容</li>
+</ol>
+<p>(1) 通过下标访问</p>
+<p>(2) 通过迭代器访问</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-keyword">for</span>(string::iterator it = str.<span class="hljs-built_in">begin</span>();it!=str.<span class="hljs-built_in">end</span>();it++)
+&#123;
+    cout&lt;&lt;*it&lt;&lt;endl;
+&#125;
+</code></pre></div>
+<ol start="3">
+<li>常用函数</li>
+</ol>
+<p>(1) operator += 字符串拼接运算符</p>
+<p>(2) compare operator 比较规则是字典序</p>
+<p>(3) size()/length() 返回字符串的长度</p>
+<p>(4) insert()</p>
+<ul>
+<li>insert(pos, string) 在pos位置插入字符串string</li>
+</ul>
+<div class="highlight"><pre class="code"><code>string str = <span class="hljs-string">&quot;abcxyz&quot;</span>, str2 = <span class="hljs-string">&quot;opq&quot;</span>;
+str.<span class="hljs-built_in">insert</span>(<span class="hljs-number">3</span>, str2); <span class="hljs-comment">//abcopqxyz</span>
+</code></pre></div>
+<ul>
+<li>insert(it, it2, it3) it为源字符串的待插入位置，it2和it3为待插入字符串的首尾迭代器，表示[it2, it3)插入到it的位置</li>
+</ul>
+<div class="highlight"><pre class="code"><code>string str = <span class="hljs-string">&quot;abcxyz&quot;</span>, str2 = <span class="hljs-string">&quot;opq&quot;</span>;
+str.<span class="hljs-built_in">insert</span>(str.<span class="hljs-built_in">begin</span>()+<span class="hljs-number">3</span>, str2.<span class="hljs-built_in">begin</span>(), str2.<span class="hljs-built_in">end</span>());
+</code></pre></div>
+<p>(5) earse()</p>
+<ul>
+<li>
+<p>earse(it) 删除单个元素</p>
+</li>
+<li>
+<p>earse(first, last) 删除区间[first, last)内的元素</p>
+</li>
+</ul>
+<p>(6) clear() 清空字符串内元素</p>
+<p>(7) substr(pos, len) 返回字符串从pos位置起，长度为len的子串</p>
+<div class="highlight"><pre class="code"><code>string str = <span class="hljs-string">&quot;Thank you for your smile.&quot;</span>;
+cout&lt;&lt;str.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>); <span class="hljs-comment">//Thank</span>
+cout&lt;&lt;str.<span class="hljs-built_in">substr</span>(<span class="hljs-number">14</span>, <span class="hljs-number">4</span>); <span class="hljs-comment">//your</span>
+cout&lt;&lt;str.<span class="hljs-built_in">substr</span>(<span class="hljs-number">19</span>, <span class="hljs-number">5</span>); <span class="hljs-comment">//smile</span>
+</code></pre></div>
+<p>(8) string::npos 用于作为find函数失配时的返回值</p>
+<p>(9) find()</p>
+<ul>
+<li>
+<p>find(str2) 如果str2是当前字符串的字串，返回出现的首位置，否则返回string::npos</p>
+</li>
+<li>
+<p>find(str2, pos) 从当前字符串的pos位开始匹配str2，返回结果同上</p>
+</li>
+</ul>
+<p>(10) replace</p>
+<ul>
+<li>
+<p>replace(pos, len, str2) 把当前字符串从pos位置开始len长度的字串替换为str2</p>
+</li>
+<li>
+<p>replace(it1, it2, str2) 把当前字符串位于迭代器[it1, it2)范围的字串替换为str2</p>
+</li>
+</ul>
+<h2 id="map">map</h2>
+<p>map意为映射，可以将任何基本类型映射到任何基本类型，比如将string映射到int，或者将STL容器映射到STL容器</p>
+<ol>
+<li>map的定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;map&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+map&lt;typename1, typename2&gt; mp;
+map&lt;string, <span class="hljs-keyword">int</span>&gt; mp2; <span class="hljs-comment">//建字符串到整形的映射</span>
+map&lt;set&lt;<span class="hljs-keyword">int</span>&gt;, string&gt; mp3; <span class="hljs-comment">//建立set容器到字符串的映射</span>
+</code></pre></div>
+<ol start="2">
+<li>map内元素的访问</li>
+</ol>
+<p>(1) 通过下标访问</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    map&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt; mp;
+    mp[<span class="hljs-string">&#x27;c&#x27;</span>] = <span class="hljs-number">20</span>;<span class="hljs-comment">// 建立&#x27;c&#x27; -&gt; 20</span>
+    mp[<span class="hljs-string">&#x27;c&#x27;</span>] = <span class="hljs-number">30</span>;<span class="hljs-comment">// 建立&#x27;c&#x27; -&gt; 30 (20被覆盖)</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, mp[<span class="hljs-string">&#x27;c&#x27;</span>]); <span class="hljs-comment">//30</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+</code></pre></div>
+<p>(2) 通过迭代器访问 通过it-&gt;first访问map的key, 通过it-&gt;second访问map的value</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    map&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt; mp;
+    mp[<span class="hljs-string">&#x27;m&#x27;</span>] = <span class="hljs-number">20</span>;
+    mp[<span class="hljs-string">&#x27;r&#x27;</span>] = <span class="hljs-number">30</span>;
+    mp[<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-number">40</span>;
+    <span class="hljs-keyword">for</span>(map&lt;<span class="hljs-keyword">char</span>, <span class="hljs-keyword">int</span>&gt;::iterator it=mp.<span class="hljs-built_in">begin</span>();it!=mp.<span class="hljs-built_in">end</span>();it++)
+    &#123;
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%c, %d&quot;</span>, it-&gt;first, it-&gt;second);
+    &#125;
+&#125;
+</code></pre></div>
+<p>map的key会按从小到大顺序排列，因为其内部也是基于红黑树实现的</p>
+<ol start="3">
+<li>常用函数</li>
+</ol>
+<p>(1) find(key) 返回键为key的映射的迭代器</p>
+<p>(2) earse()</p>
+<ul>
+<li>
+<p>earse(it) 删除迭代器it对应的键值对</p>
+</li>
+<li>
+<p>earse(key) 删除键为key对应的元素</p>
+</li>
+<li>
+<p>earse(first, last) 删除迭代器区间[first, last)内的键值对</p>
+</li>
+</ul>
+<p>(3) size() 返回map内键值对的数量</p>
+<p>(4) clear() 清空map的元素</p>
+<ol start="4">
+<li>map的使用场景</li>
+</ol>
+<ul>
+<li>
+<p>需要建立字符或字符串与整数映射的题目</p>
+</li>
+<li>
+<p>判断大整数或其他数据类型是否存在的题目，可以把map当做布尔数组使用</p>
+</li>
+</ul>
+<p>注：map的键和值是唯一的，如果需要一个键对应多个值，需要用multimap，另外C++11中还增加了unordered_map，用散列替代红黑树，只做映射不做排序，速度更快</p>
+<h2 id="queue">queue</h2>
+<p>queue意为队列，在STL中是一个先进先出的容器</p>
+<ol>
+<li>queue定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+queue&lt;<span class="hljs-keyword">typename</span>&gt; q;
+</code></pre></div>
+<ol start="2">
+<li>queue内元素的访问</li>
+</ol>
+<p>队列只允许元素先进先出，即插入操作发生在队尾，删除操作发生在队头。STL中通过front()访问队头元素, back()访问队尾元素</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    queue&lt;<span class="hljs-keyword">int</span>&gt; q;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">5</span>;i++)
+    &#123;
+        q.<span class="hljs-built_in">push</span>(i);
+    &#125;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, %d&quot;</span>, q.<span class="hljs-built_in">front</span>(), q.<span class="hljs-built_in">back</span>());
+&#125;
+</code></pre></div>
+<ol start="3">
+<li>常用函数</li>
+</ol>
+<p>(1) push(x)  x入队，插入队尾</p>
+<p>(2) front(), back() 访问队头、队尾元素</p>
+<p>(3) pop() 队头元素出队</p>
+<p>(4) empty() 检测queue是否空，空返回true,不空返回false</p>
+<p>(5) size() 返回queue内元素的个数</p>
+<ol start="4">
+<li>主要用途</li>
+</ol>
+<p>实现BFS时，可以通过STL提供的queue,避免自己实现队列遇到错误情况，简化代码</p>
+<p>注：使用front()和pop()前，必须用empty()判断队列是否空，队列不空才能pop和取元素</p>
+<h2 id="priority_queue">priority_queue</h2>
+<p>priority_queue意为优先队列，本质就是一个最大堆（默认）底层用堆实现。在优先队列中，队首元素一定是当前优先队列中优先级最高的那一个。</p>
+<ol>
+<li>定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;queue&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+priority_queue&lt;<span class="hljs-keyword">typename</span>&gt; name;
+</code></pre></div>
+<ol start="2">
+<li>元素访问</li>
+</ol>
+<p>通过top()访问堆顶元素，也就是优先级最高的元素</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    priority_queue&lt;<span class="hljs-keyword">int</span>&gt; q;
+    q.<span class="hljs-built_in">push</span>(<span class="hljs-number">3</span>);
+    q.<span class="hljs-built_in">push</span>(<span class="hljs-number">4</span>);
+    q.<span class="hljs-built_in">push</span>(<span class="hljs-number">1</span>);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, q.<span class="hljs-built_in">top</span>()); <span class="hljs-comment">//4</span>
+&#125;
+</code></pre></div>
+<ol start="3">
+<li>常用函数</li>
+</ol>
+<p>(1) push(x) x入队</p>
+<p>(2) top() 返回堆顶元素</p>
+<p>(3) pop() 弹出堆顶元素</p>
+<p>(4) empty() 检测队列是否空</p>
+<p>(5) size() 返回队列内元素的个数</p>
+<ol start="4">
+<li>priority_queue优先级设置</li>
+</ol>
+<p>(1) 基本数据类型优先级设置<br>
+此处基本数据类型就是int, double, char等直接可用的数据类型，优先级队列对他们的设计原则是数字大的优先级高</p>
+<div class="highlight"><pre class="code"><code>priority_queue&lt;<span class="hljs-keyword">int</span>, vector&lt;<span class="hljs-keyword">int</span>&gt;, less&lt;<span class="hljs-keyword">int</span>&gt; &gt; q;<span class="hljs-comment">//数字越大优先级越高（降序）</span>
+priority_queue&lt;<span class="hljs-keyword">double</span>, vector&lt;<span class="hljs-keyword">double</span>&gt;, greater&lt;<span class="hljs-keyword">double</span>&gt; &gt; q2;<span class="hljs-comment">//数字越小优先级越高（升序）</span>
+</code></pre></div>
+<p>(2) 结构体类型优先级设置</p>
+<p>定义表示水果的结构体，包含水果名称和价格两个成员</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fruit</span>
+&#123;</span>
+    string name;
+    <span class="hljs-keyword">int</span> price;
+&#125;;
+</code></pre></div>
+<p>希望水果价格高的优先级高，需要重载operator &lt; 运算符</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fruit</span>
+&#123;</span>
+    string name;
+    <span class="hljs-keyword">int</span> price;
+    <span class="hljs-keyword">friend</span> <span class="hljs-keyword">bool</span> <span class="hljs-keyword">operator</span> &lt; (fruit f1, fruit f2) &#123;
+        <span class="hljs-keyword">return</span> f1.price &lt; f2.price; <span class="hljs-comment">//内部按水果价格排序</span>
+    &#125;
+&#125;;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    priority_queue&lt;fruit&gt; q;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fruit</span> <span class="hljs-title">f1</span>, <span class="hljs-title">f2</span>, <span class="hljs-title">f3</span>;</span>
+    f1.name = <span class="hljs-string">&quot;桃子&quot;</span>;
+    f1.price = <span class="hljs-number">3</span>;
+    f2.name = <span class="hljs-string">&quot;梨子&quot;</span>;
+    f2.price = <span class="hljs-number">4</span>;
+    f3.name = <span class="hljs-string">&quot;苹果&quot;</span>;
+    f3.price = <span class="hljs-number">1</span>;
+    q.<span class="hljs-built_in">push</span>(f1);
+    q.<span class="hljs-built_in">push</span>(f2);
+    q.<span class="hljs-built_in">push</span>(f3);
+    cout&lt;&lt;q.<span class="hljs-built_in">top</span>().name&lt;&lt;q.<span class="hljs-built_in">top</span>().price&lt;&lt;endl; <span class="hljs-comment">//梨子 4</span>
+&#125;
+</code></pre></div>
+<h2 id="stack">stack</h2>
+<p>stack意为栈，是STL中一个后进先出的容器，插入和删除都在栈顶操作</p>
+<ol>
+<li>定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;stack&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+stack&lt;<span class="hljs-keyword">typename</span>&gt; s;
+</code></pre></div>
+<ol start="2">
+<li>栈内部元素的访问</li>
+</ol>
+<p>由于栈本身是一种后进先出的数据结构，在STL中只能通过top()来访问栈顶元素</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    stack&lt;<span class="hljs-keyword">int</span>&gt; st;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">5</span>;i++)
+    &#123;
+        st.<span class="hljs-built_in">push</span>(i); <span class="hljs-comment">// push顺序 1, 2, 3, 4, 5</span>
+    &#125;
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, st.<span class="hljs-built_in">top</span>()); <span class="hljs-comment">//5</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+</code></pre></div>
+<ol start="3">
+<li>常用函数</li>
+</ol>
+<p>(1) push(x) x入栈</p>
+<p>(2) top() 取栈顶元素</p>
+<p>(3) pop() 弹出栈顶元素</p>
+<p>(4) empty() 判断栈是否空</p>
+<p>(5) size() 返回栈内元素个数</p>
+<ol start="4">
+<li>用途</li>
+</ol>
+<p>stack用于模拟一些递归栈，用空间换取时间，避免递归层数过多导致的超时</p>
+<h2 id="pair">pair</h2>
+<p>pair可看作内部有两个元素的结构体，且两个元素的类型可指定</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">pair</span>
+&#123;</span>
+    typename1 first;
+    typename2 second;
+&#125;;
+</code></pre></div>
+<ol>
+<li>pair定义</li>
+</ol>
+<div class="highlight"><pre class="code"><code><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;map&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+pair&lt;typename1, typename2&gt; name;
+</code></pre></div>
+<p>如果想定义pair同时初始化，只需跟上一个小括号，里面填上两个待初始化的元素</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-function">pair&lt;string, <span class="hljs-keyword">int</span>&gt; <span class="hljs-title">p</span><span class="hljs-params">(<span class="hljs-string">&quot;haha&quot;</span>, <span class="hljs-number">5</span>)</span></span>;
+</code></pre></div>
+<p>如果想在代码中临时定义pair,两种方法：</p>
+<ul>
+<li>类型定义写在前面，后面用小括号</li>
+</ul>
+<div class="highlight"><pre class="code"><code><span class="hljs-function">pair&lt;string, <span class="hljs-keyword">int</span>&gt; <span class="hljs-title">p</span><span class="hljs-params">(<span class="hljs-string">&quot;haha&quot;</span>, <span class="hljs-number">5</span>)</span></span>;
+</code></pre></div>
+<ul>
+<li>使用自带的make_pair方法</li>
+</ul>
+<div class="highlight"><pre class="code"><code><span class="hljs-built_in">make_pair</span>(<span class="hljs-string">&quot;haha&quot;</span>, <span class="hljs-number">5</span>);
+</code></pre></div>
+<ol start="2">
+<li>pair中元素的访问</li>
+</ol>
+<p>pair中只有两个元素：first和second，按结构体方法去访问即可</p>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    pair&lt;string, <span class="hljs-keyword">int</span>&gt; p;
+    p.first = <span class="hljs-string">&quot;haha&quot;</span>;
+    p.second = <span class="hljs-number">5</span>;
+    cout&lt;&lt;p.first&lt;&lt;p.second&lt;&lt;endl;
+    p = <span class="hljs-built_in">make_pair</span>(<span class="hljs-string">&quot;xixi&quot;</span>, <span class="hljs-number">55</span>);
+    cout&lt;&lt;p.first&lt;&lt;p.second&lt;&lt;endl;
+    p = pair&lt;string, <span class="hljs-keyword">int</span>&gt;(<span class="hljs-string">&quot;heihei&quot;</span>, <span class="hljs-number">5</span>);
+    cout&lt;&lt;p.first&lt;&lt;p.second&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;
+</code></pre></div>
+<ol start="3">
+<li>用途</li>
+</ol>
+<ul>
+<li>
+<p>用来代替二元结构体及其构造函数，节省编码时间</p>
+</li>
+<li>
+<p>作为map的键值对插入</p>
+</li>
+</ul>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>&#123;
+    map&lt;string, <span class="hljs-keyword">int</span>&gt; mp;
+    mp.<span class="hljs-built_in">insert</span>(<span class="hljs-built_in">make_pair</span>(<span class="hljs-string">&quot;heihei&quot;</span>, <span class="hljs-number">5</span>));
+    mp.<span class="hljs-built_in">insert</span>(<span class="hljs-built_in">make_pair</span>(<span class="hljs-string">&quot;haha&quot;</span>, <span class="hljs-number">10</span>));
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> iterator it = mp.<span class="hljs-built_in">begin</span>();it!=mp.<span class="hljs-built_in">end</span>();it++)
+    &#123;
+        cout&lt;&lt;it-&gt;first&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;it-&gt;second&lt;&lt;endl; <span class="hljs-comment">//haha 10 heihei 5</span>
+    &#125;
+&#125;
+</code></pre></div>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../../02/Linux%E9%AB%98%E7%BA%A7%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          Linux高级命令使用
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+    <aside id="sidebar" class="outer">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="">STL常见容器用法</a>
+          </li>
+        
+          <li>
+            <a href="../../02/Linux%E9%AB%98%E7%BA%A7%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8/">Linux高级命令使用</a>
+          </li>
+        
+          <li>
+            <a href="../../../04/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/">二叉树的遍历</a>
+          </li>
+        
+          <li>
+            <a href="../../../04/18/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9F%A5%E6%89%BE/">二维数组中的查找</a>
+          </li>
+        
+          <li>
+            <a href="../../../02/20/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/linux/" style="font-size: 10px;">linux</a> <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AE%97%E6%B3%95/" style="font-size: 10px;">数据结构, 算法</a> <a href="../../../../tags/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/" style="font-size: 10px;">算法刷题</a>
+    </div>
+  </div>
+
+  
+</aside>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 taozhi<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a><br>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="../../../../about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="../../../../js/clipboard.min.js"></script>
+<script src="../../../../js/jquery-1.4.3.min.js"></script>
+
+<script src="../../../../fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError : false
+    });
+  });
+</script>
+
+  </div>
+</body>
+</html>
