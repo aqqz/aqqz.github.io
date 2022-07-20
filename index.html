@@ -52,6 +52,251 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-二维dp——最长回文子串求解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="2022/07/20/%E4%BA%8C%E7%BB%B4dp%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2%E6%B1%82%E8%A7%A3/" class="article-date">
+  <time class="dt-published" datetime="2022-07-20T08:05:56.000Z" itemprop="datePublished">2022-07-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="2022/07/20/%E4%BA%8C%E7%BB%B4dp%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2%E6%B1%82%E8%A7%A3/">二维dp——最长回文子串求解</a>
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="题目">题目</h2>
+<p>给你一个字符串s，找到s中最长的回文子串</p>
+<h2 id="思路">思路</h2>
+<ul>
+<li>
+<p>对于一个字符串，如果它的长度为1，那么必定是回文串。</p>
+</li>
+<li>
+<p>考虑一般情况</p>
+</li>
+</ul>
+<p>如果一个字符串是回文串，那么去掉两端的字符一定也是回文串，比如ababa是回文，其中bab也是回文。那么可以设二维dp数组，dp[i][j]表示字符串从第i位到第j位是否构成回文串（i&lt;=j）</p>
+<p>那么，我们只需要填充这个二维表格，找到这个二维表格中“相距最远”的两个1（即代表最长的回文子串）</p>
+<ul>
+<li>考虑如何递推填充二位dp数组</li>
+</ul>
+<p>首先考虑基本情况，所有回文子串可以看作由长度为1的子串（构成长度为奇数的回文串）和长度为2的子串（构成长度为偶数的回文子串）两种基本情况扩展来。所以有</p>
+<div class="highlight"><pre class="code"><code>dp[i][i] = <span class="hljs-number">1</span>; (i&gt;=<span class="hljs-number">0</span> &amp;&amp; i&lt;str.<span class="hljs-built_in">size</span>())
+dp[i][i+<span class="hljs-number">1</span>] = (str[i]==str[i+<span class="hljs-number">1</span>]) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>; (i+<span class="hljs-number">1</span> &lt; str.<span class="hljs-built_in">size</span>())
+</code></pre></div>
+<p>这样就填充了表格的中间和上边一大部分</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>j</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i</td>
+<td></td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+</tr>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>此时考虑填充剩下的部分，由于i&lt;=j，所以只需填充上三角部分对应的矩阵即可，并且，我们考虑了基本情况即子串长度为1和长度为2的情况，只需从长度为3考虑，即j起始位置应该是i+2，同时要保证i和j不越界(0&lt;i&lt;=j&lt;str.size())</p>
+<ul>
+<li>考虑状态转移情况</li>
+</ul>
+<p>如果str[i]==str[j]，那么从i到j构成的子串是否是回文串由去掉边界两个字符决定，即dp[i][j]==dp[i+1][j-1]，体现在表格上就是dp[i][j]左下角的元素。如果我们自上而下填充这个表格，会出现一个元素左下角元素未计算的情况，因此，考虑对i从下往上遍历，保证左下角元素存在（i从str.size()-2到0遍历）遍历行的同时，j从左向右遍历，填充一行向上，直到填充整个上三角。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>j</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i</td>
+<td></td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+</tr>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a</td>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>计算最长回文子串</li>
+</ul>
+<p>得到二维dp数组后，从中找每行相距最远的两个1即为对应回文子串的边界下标。找最长回文子串的代码，复杂度O（n^2）</p>
+<div class="highlight"><pre class="code"><code>string res;
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i&lt;str.<span class="hljs-built_in">size</span>();i++)
+&#123;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i;j&lt;str.<span class="hljs-built_in">size</span>();j++)
+    &#123;
+        <span class="hljs-keyword">if</span>(dp[i][j]==<span class="hljs-number">1</span> &amp;&amp; j-i+<span class="hljs-number">1</span>&gt;res.<span class="hljs-built_in">size</span>()) 
+        &#123;
+            res = str.<span class="hljs-built_in">substr</span>(i，j-i+<span class="hljs-number">1</span>);
+        &#125;
+    &#125;
+&#125;
+<span class="hljs-keyword">return</span> res;
+</code></pre></div>
+<h2 id="代码">代码</h2>
+<div class="highlight"><pre class="code"><code><span class="hljs-function">string <span class="hljs-title">longestPalindrome</span><span class="hljs-params">(string s)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(s.<span class="hljs-built_in">size</span>()==<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> s;
+    <span class="hljs-keyword">int</span> len = s.<span class="hljs-built_in">size</span>();
+    vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt; &gt;<span class="hljs-built_in">dp</span>(len，vector&lt;<span class="hljs-keyword">int</span>&gt;(len，<span class="hljs-number">0</span>));
+    string res;
+    <span class="hljs-comment">//初始化边界</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i&lt;len;i++)
+    &#123;
+        dp[i][i] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span>(i+<span class="hljs-number">1</span>&lt;len &amp;&amp; s[i]==s[i+<span class="hljs-number">1</span>]) dp[i][i+<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+    &#125;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = len<span class="hljs-number">-1</span>;i&gt;=<span class="hljs-number">0</span>;i--)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i+<span class="hljs-number">2</span>;j&lt;len;j++)
+            <span class="hljs-keyword">if</span>(s[i]==s[j]) dp[i][j] = dp[i+<span class="hljs-number">1</span>][j<span class="hljs-number">-1</span>];
+        
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i&lt;len;i++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i;j&lt;len;j++) 
+            <span class="hljs-keyword">if</span>(dp[i][j]==<span class="hljs-number">1</span> &amp;&amp; j-i+<span class="hljs-number">1</span> &gt; res.<span class="hljs-built_in">size</span>()) res = s.<span class="hljs-built_in">substr</span>(i，j-i+<span class="hljs-number">1</span>);
+    
+    <span class="hljs-keyword">return</span> res;
+&#125;
+</code></pre></div>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-STL常见容器用法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="2022/07/10/STL%E5%B8%B8%E8%A7%81%E5%AE%B9%E5%99%A8%E7%94%A8%E6%B3%95/" class="article-date">
@@ -547,6 +792,8 @@ pair&lt;typename1, typename2&gt; name;
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/C/" rel="tag">C++</a></li></ul>
+
     </footer>
   </div>
   
@@ -727,7 +974,7 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/Linux/" rel="tag">Linux</a></li></ul>
 
     </footer>
   </div>
@@ -768,7 +1015,7 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
     <span class="hljs-keyword">int</span> val;
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">TreeLinkNode</span> *<span class="hljs-title">left</span>;</span>
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">TreeLinkNode</span> *<span class="hljs-title">right</span>;</span>
-    <span class="hljs-built_in">TreeLinkNode</span>(<span class="hljs-keyword">int</span> x) :<span class="hljs-built_in">val</span>(x), <span class="hljs-built_in">left</span>(<span class="hljs-literal">NULL</span>), <span class="hljs-built_in">right</span>(<span class="hljs-literal">NULL</span>) &#123;
+    <span class="hljs-built_in">TreeLinkNode</span>(<span class="hljs-keyword">int</span> x) :<span class="hljs-built_in">val</span>(x)， <span class="hljs-built_in">left</span>(<span class="hljs-literal">NULL</span>)， <span class="hljs-built_in">right</span>(<span class="hljs-literal">NULL</span>) &#123;
         
     &#125;
 &#125;;
@@ -783,7 +1030,7 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
 <h3 id="算法思路">算法思路</h3>
 <ol>
 <li>插入一个节点，就把这个节点放入队列尾部（push_back）</li>
-<li>每次插入节点时，从队列首部<strong>取</strong>一个元素（front）,该元素是树中应该插入且未插满的元素，如果左孩子空，插左边，右孩子空，插右边</li>
+<li>每次插入节点时，从队列首部<strong>取</strong>一个元素（front），该元素是树中应该插入且未插满的元素，如果左孩子空，插左边，右孩子空，插右边</li>
 <li>插完右边之后，这个节点就插满了，从队列头部<strong>弹出</strong>（pop_front）</li>
 </ol>
 <h3 id="代码实现">代码实现</h3>
@@ -970,7 +1217,7 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AE%97%E6%B3%95/" rel="tag">数据结构, 算法</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
 
     </footer>
   </div>
@@ -1006,19 +1253,19 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
         <h2 id="题目描述">题目描述</h2>
 <p>在一个二维数组array中（每个一维数组的长度相同），每一行从左至右递增，每一列从上至下递增。完成一个函数，输入这样一个二维数组和一个整数，判断数组中是否含有该整数。</p>
 <p>输入：<br>
-[[1, 2, 8, 9],<br>
-[2, 4, 9, 12],<br>
-[4, 7, 10, 13],<br>
-[6, 8, 11, 15]]</p>
-<p>给定target=7,返回true.</p>
-<p>给定target=3,返回false.</p>
-<p>数据范围：矩阵长宽满足0&lt;n,m&lt;500,矩阵中的值满足0&lt;val&lt;10^9</p>
+[[1， 2， 8， 9]，<br>
+[2， 4， 9， 12]，<br>
+[4， 7， 10， 13]，<br>
+[6， 8， 11， 15]]</p>
+<p>给定target=7，返回true.</p>
+<p>给定target=3，返回false.</p>
+<p>数据范围：矩阵长宽满足0&lt;n，m&lt;500，矩阵中的值满足0&lt;val&lt;10^9</p>
 <h2 id="解法：二维数组的二分查找">解法：二维数组的二分查找</h2>
 <p>思路：这道题是要在二维有序数组中查找元素，在一维有序数组中查找元素常用二分查找提高效率，因此想尝试拓展到二维。二分查找是通过不断缩小查询范围，每次查找使得搜索空间减半从而提高查找效率的。</p>
-<p>在一维二分查找中，常采用数组首尾元素当做查找边界，但是这道题不可以这样做。比如如果（begin0,begin1）左上元素当做首节点，（end0, end1）右下当做尾节点，中间元素（mid0, mid1）和target比较大小，从而确定begin、end变量如何调整。但是在这道题中，按主对角线方向，对于任意元素，其上方和左方元素都比自身小，而其右方和下方元素都比自身大，所以比较大小后无法得到确定的调整方向。</p>
-<p>但是如果以副对角线方向选择节点，任意一元素，其左方元素比自身小，下方元素比自身大；其上方元素比自身小，右方元素比自身大，因此选定左下或右上元素作为起点，可以通过比较target大小确定行列的收缩（扩张）范围。如果选择右上元素作为起点，如果target&lt;node,列减小，应该向左侧移动；如果target&gt;node,行增加，应该向下方移动。</p>
+<p>在一维二分查找中，常采用数组首尾元素当做查找边界，但是这道题不可以这样做。比如如果（begin0，begin1）左上元素当做首节点，（end0， end1）右下当做尾节点，中间元素（mid0， mid1）和target比较大小，从而确定begin、end变量如何调整。但是在这道题中，按主对角线方向，对于任意元素，其上方和左方元素都比自身小，而其右方和下方元素都比自身大，所以比较大小后无法得到确定的调整方向。</p>
+<p>但是如果以副对角线方向选择节点，任意一元素，其左方元素比自身小，下方元素比自身大；其上方元素比自身小，右方元素比自身大，因此选定左下或右上元素作为起点，可以通过比较target大小确定行列的收缩（扩张）范围。如果选择右上元素作为起点，如果target&lt;node，列减小，应该向左侧移动；如果target&gt;node，行增加，应该向下方移动。</p>
 <h2 id="代码">代码</h2>
-<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">Find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target, vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; array)</span>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">Find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target， vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; array)</span>
 </span>&#123;
     <span class="hljs-keyword">bool</span> res = <span class="hljs-literal">false</span>;
     <span class="hljs-keyword">int</span> shape0 = array.<span class="hljs-built_in">size</span>();
@@ -1054,7 +1301,7 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/" rel="tag">算法刷题</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a></li></ul>
 
     </footer>
   </div>
@@ -1136,6 +1383,10 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
       <ul>
         
           <li>
+            <a href="2022/07/20/%E4%BA%8C%E7%BB%B4dp%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2%E6%B1%82%E8%A7%A3/">二维dp——最长回文子串求解</a>
+          </li>
+        
+          <li>
             <a href="2022/07/10/STL%E5%B8%B8%E8%A7%81%E5%AE%B9%E5%99%A8%E7%94%A8%E6%B3%95/">STL常见容器用法</a>
           </li>
         
@@ -1151,10 +1402,6 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
             <a href="2022/04/18/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E6%9F%A5%E6%89%BE/">二维数组中的查找</a>
           </li>
         
-          <li>
-            <a href="2022/02/20/hello-world/">Hello World</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1167,7 +1414,7 @@ ifconfig eth0 192.168.1.13 netmask 255.255.255.0 <span class="hljs-comment"># �
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="tags/linux/" style="font-size: 10px;">linux</a> <a href="tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AE%97%E6%B3%95/" style="font-size: 10px;">数据结构, 算法</a> <a href="tags/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/" style="font-size: 10px;">算法刷题</a>
+      <a href="tags/C/" style="font-size: 10px;">C++</a> <a href="tags/Linux/" style="font-size: 10px;">Linux</a> <a href="tags/%E4%BA%8C%E5%88%86/" style="font-size: 10px;">二分</a> <a href="tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a>
     </div>
   </div>
 

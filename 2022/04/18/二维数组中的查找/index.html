@@ -10,10 +10,10 @@
   <meta name="description" content="题目描述
 在一个二维数组array中（每个一维数组的长度相同），每一行从左至右递增，每一列从上至下递增。完成一个函数，输入这样一个二维数组和一个整数，判断数组中是否含有该整数。
 输入：
-[[1, 2, 8, 9],
-[2, 4, 9, 12],
-[4, 7, 10, 13],
-[6, 8, 11, ">
+[[1， 2， 8， 9]，
+[2， 4， 9， 12]，
+[4， 7， 10， 13]，
+[6， 8， 11， ">
   
   
   
@@ -89,19 +89,19 @@
         <h2 id="题目描述">题目描述</h2>
 <p>在一个二维数组array中（每个一维数组的长度相同），每一行从左至右递增，每一列从上至下递增。完成一个函数，输入这样一个二维数组和一个整数，判断数组中是否含有该整数。</p>
 <p>输入：<br>
-[[1, 2, 8, 9],<br>
-[2, 4, 9, 12],<br>
-[4, 7, 10, 13],<br>
-[6, 8, 11, 15]]</p>
-<p>给定target=7,返回true.</p>
-<p>给定target=3,返回false.</p>
-<p>数据范围：矩阵长宽满足0&lt;n,m&lt;500,矩阵中的值满足0&lt;val&lt;10^9</p>
+[[1， 2， 8， 9]，<br>
+[2， 4， 9， 12]，<br>
+[4， 7， 10， 13]，<br>
+[6， 8， 11， 15]]</p>
+<p>给定target=7，返回true.</p>
+<p>给定target=3，返回false.</p>
+<p>数据范围：矩阵长宽满足0&lt;n，m&lt;500，矩阵中的值满足0&lt;val&lt;10^9</p>
 <h2 id="解法：二维数组的二分查找">解法：二维数组的二分查找</h2>
 <p>思路：这道题是要在二维有序数组中查找元素，在一维有序数组中查找元素常用二分查找提高效率，因此想尝试拓展到二维。二分查找是通过不断缩小查询范围，每次查找使得搜索空间减半从而提高查找效率的。</p>
-<p>在一维二分查找中，常采用数组首尾元素当做查找边界，但是这道题不可以这样做。比如如果（begin0,begin1）左上元素当做首节点，（end0, end1）右下当做尾节点，中间元素（mid0, mid1）和target比较大小，从而确定begin、end变量如何调整。但是在这道题中，按主对角线方向，对于任意元素，其上方和左方元素都比自身小，而其右方和下方元素都比自身大，所以比较大小后无法得到确定的调整方向。</p>
-<p>但是如果以副对角线方向选择节点，任意一元素，其左方元素比自身小，下方元素比自身大；其上方元素比自身小，右方元素比自身大，因此选定左下或右上元素作为起点，可以通过比较target大小确定行列的收缩（扩张）范围。如果选择右上元素作为起点，如果target&lt;node,列减小，应该向左侧移动；如果target&gt;node,行增加，应该向下方移动。</p>
+<p>在一维二分查找中，常采用数组首尾元素当做查找边界，但是这道题不可以这样做。比如如果（begin0，begin1）左上元素当做首节点，（end0， end1）右下当做尾节点，中间元素（mid0， mid1）和target比较大小，从而确定begin、end变量如何调整。但是在这道题中，按主对角线方向，对于任意元素，其上方和左方元素都比自身小，而其右方和下方元素都比自身大，所以比较大小后无法得到确定的调整方向。</p>
+<p>但是如果以副对角线方向选择节点，任意一元素，其左方元素比自身小，下方元素比自身大；其上方元素比自身小，右方元素比自身大，因此选定左下或右上元素作为起点，可以通过比较target大小确定行列的收缩（扩张）范围。如果选择右上元素作为起点，如果target&lt;node，列减小，应该向左侧移动；如果target&gt;node，行增加，应该向下方移动。</p>
 <h2 id="代码">代码</h2>
-<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">Find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target, vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; array)</span>
+<div class="highlight"><pre class="code"><code><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">Find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target， vector&lt;vector&lt;<span class="hljs-keyword">int</span>&gt;&gt; array)</span>
 </span>&#123;
     <span class="hljs-keyword">bool</span> res = <span class="hljs-literal">false</span>;
     <span class="hljs-keyword">int</span> shape0 = array.<span class="hljs-built_in">size</span>();
@@ -137,7 +137,7 @@
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/" rel="tag">算法刷题</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/%E4%BA%8C%E5%88%86/" rel="tag">二分</a></li></ul>
 
     </footer>
   </div>
@@ -184,6 +184,10 @@
       <ul>
         
           <li>
+            <a href="../../../07/20/%E4%BA%8C%E7%BB%B4dp%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2%E6%B1%82%E8%A7%A3/">二维dp——最长回文子串求解</a>
+          </li>
+        
+          <li>
             <a href="../../../07/10/STL%E5%B8%B8%E8%A7%81%E5%AE%B9%E5%99%A8%E7%94%A8%E6%B3%95/">STL常见容器用法</a>
           </li>
         
@@ -199,10 +203,6 @@
             <a href="">二维数组中的查找</a>
           </li>
         
-          <li>
-            <a href="../../../02/20/hello-world/">Hello World</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -215,7 +215,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="../../../../tags/linux/" style="font-size: 10px;">linux</a> <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AE%97%E6%B3%95/" style="font-size: 10px;">数据结构, 算法</a> <a href="../../../../tags/%E7%AE%97%E6%B3%95%E5%88%B7%E9%A2%98/" style="font-size: 10px;">算法刷题</a>
+      <a href="../../../../tags/C/" style="font-size: 10px;">C++</a> <a href="../../../../tags/Linux/" style="font-size: 10px;">Linux</a> <a href="../../../../tags/%E4%BA%8C%E5%88%86/" style="font-size: 10px;">二分</a> <a href="../../../../tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="../../../../tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a>
     </div>
   </div>
 
